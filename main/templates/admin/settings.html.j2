@@ -62,17 +62,31 @@
 
         <hr>
 
-        <!-- Other settings -->
-        {% for setting in settings %}
-            {% if setting.key != "section_title_css" and setting.key != "paragraph_css" %}
-                <h3>{{ _(setting.key) }}</h3>
-                <textarea name="{{ setting.key }}" rows="4" cols="80">{{ setting.value }}</textarea>
-                <hr>
-            {% endif %}
-        {% endfor %}
+<!-- Other settings -->
+{% for setting in settings %}
+    {% if setting.key != "section_title_css" and setting.key != "paragraph_css" %}
+        {% if setting.key == "theme_mode" %}
+            <h3>{{ _('Choose Theme Mode') }}</h3>
+            <label>{{ _('Theme') }}</label>
+            <select name="theme_mode">
+                <option value="light" {% if settings_dict.get('theme_mode') == 'light' %}selected{% endif %}>🌞 Light</option>
+                <option value="dark" {% if settings_dict.get('theme_mode') == 'dark' %}selected{% endif %}>🌚 Dark</option>
+                <option value="blue" {% if settings_dict.get('theme_mode') == 'blue' %}selected{% endif %}>💙 Blue</option>
+                <option value="brown" {% if settings_dict.get('theme_mode') == 'brown' %}selected{% endif %}>🟤 Brown</option>
+                <option value="purple" {% if settings_dict.get('theme_mode') == 'purple' %}selected{% endif %}>💜 Purple</option>
+            </select>
+            <hr>
+        {% else %}
+            <h3>{{ _(setting.key) }}</h3>
+            <textarea name="{{ setting.key }}" rows="4" cols="80">{{ setting.value }}</textarea>
+            <hr>
+        {% endif %}
+    {% endif %}
+{% endfor %}
+
+
 
         <button type="submit" name="action" value="save">💾 {{ _('Save Changes') }}</button>
-        <button type="submit" name="action" value="save_and_preview">💾 {{ _('Save & Show Preview') }}</button>
 
     </form>
 

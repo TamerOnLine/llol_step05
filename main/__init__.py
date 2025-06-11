@@ -5,8 +5,6 @@ from .models.models import (
 )
 from .routes.admin import admin_bp
 
-
-from .routes.public_routes import public_bp
 from .routes.main_routes import main_bp
 from .extensions import babel
 from .i18n_runtime import init_i18n, get_locale
@@ -38,7 +36,6 @@ def create_app():
     init_i18n(app)
 
     app.register_blueprint(main_bp)
-    app.register_blueprint(public_bp)
     app.register_blueprint(admin_bp)
 
     with app.app_context():
@@ -48,6 +45,8 @@ def create_app():
             insert_initial_sections()
             insert_initial_navigation()
             insert_initial_languages()
+            insert_initial_settings()
+
 
     @app.before_request
     def log_locale_info():
@@ -58,7 +57,10 @@ def create_app():
     def inject_globals():
         nav_links = NavigationLink.query.order_by(NavigationLink.order).all()
         langs = LanguageOption.query.order_by(LanguageOption.order).all()
-        return dict(nav_links=nav_links, langs=langs)
+        settings_list = Setting.query.all()
+        settings_dict = {s.key: s.value for s in settings_list}
+        return dict(nav_links=nav_links, langs=langs, settings=settings_list, settings_dict=settings_dict)
+
 
     return app
 
@@ -83,11 +85,10 @@ def insert_initial_navigation():
     """
     if NavigationLink.query.count() == 0:
         nav_items = [
-            {"label": "Home", "icon": "🏠", "endpoint": "main.home", "order": 1},
-            {"label": "Sections", "icon": "📝", "endpoint": "admin.manage_sections", "order": 2},
-            {"label": "Settings", "icon": "🎨", "endpoint": "admin.manage_settings", "order": 3},
-            {"label": "Resume", "icon": "📄", "endpoint": "public.resume", "order": 4},
-            {"label": "Builder", "icon": "🧱", "endpoint": "admin.resume_builder", "order": 5}
+            {"label": "Home", "icon": "🏠", "endpoint": "main.index", "order": 0},
+            {"label": "Sections", "icon": "📝", "endpoint": "admin.manage_sections", "order": 1},
+            {"label": "Settings", "icon": "🎨", "endpoint": "admin.manage_settings", "order": 2},
+            {"label": "Builder", "icon": "🧱", "endpoint": "admin.resume_builder", "order": 3}
             
 
         ]
@@ -111,3 +112,18 @@ def insert_initial_languages():
             db.session.add(LanguageOption(**lang))
         db.session.commit()
         print("Languages inserted.")
+
+
+def insert_initial_settings():
+    from .models.models import Setting
+    if not Setting.query.filter_by(key="section_title_css").first():
+        db.session.add(Setting(key="section_title_css", value='{"font-size": "20px", "color": "#000", "font-weight": "normal"}'))
+    if not Setting.query.filter_by(key="paragraph_css").first():
+        db.session.add(Setting(key="paragraph_css", value='{"font-size": "14px", "color": "#333"}'))
+    if not Setting.query.filter_by(key="body_font").first():
+        db.session.add(Setting(key="body_font", value="font-family: Arial, sans-serif;"))
+    if not Setting.query.filter_by(key="theme_mode").first():
+        db.session.add(Setting(key="theme_mode", value="light"))
+    db.session.commit()
+
+

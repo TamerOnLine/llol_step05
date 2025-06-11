@@ -19,6 +19,7 @@ class Setting(db.Model):
     value = db.Column(db.Text, nullable=False)
 
 
+
 class ResumeSection(db.Model):
     """
     Resume section with language support and visibility toggle.

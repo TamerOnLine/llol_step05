@@ -38,41 +38,49 @@ def manage_settings():
 
     if request.method == "POST":
         try:
+            # ✅ section_title_css
             font_size = request.form.get("section_title_css_font_size")
             color = request.form.get("section_title_css_color")
             weight = request.form.get("section_title_css_weight")
-
+            if not font_size or not color or not weight:
+                raise ValueError("Section title CSS values cannot be empty.")
             css_json = {
                 "font-size": font_size,
                 "color": color,
                 "font-weight": weight
             }
-
             setting = Setting.query.filter_by(key="section_title_css").first()
             if setting:
                 setting.value = json.dumps(css_json)
 
+            # ✅ paragraph_css
             p_font_size = request.form.get("paragraph_css_font_size")
             p_color = request.form.get("paragraph_css_color")
-
+            if not p_font_size or not p_color:
+                raise ValueError("Paragraph CSS values cannot be empty.")
             paragraph_css_json = {
                 "font-size": p_font_size,
                 "color": p_color
             }
-
             p_setting = Setting.query.filter_by(key="paragraph_css").first()
             if p_setting:
                 p_setting.value = json.dumps(paragraph_css_json)
 
+            # ✅ body_font
             body_font = request.form.get("body_font")
             b_setting = Setting.query.filter_by(key="body_font").first()
             if b_setting:
                 b_setting.value = body_font
 
+            # ✅ فقط الحقول التي يجب فحصها كـ JSON
+            json_keys = ["section_title_css", "paragraph_css"]
+
+            # ✅ الحقول التي لا يجب تعديلها مباشرة
             skip_keys = [
                 "section_title_css_font_size", "section_title_css_color", "section_title_css_weight",
                 "paragraph_css_font_size", "paragraph_css_color",
-                "body_font"
+                "body_font",
+                "dark_mode_enabled"
             ]
 
             for key, value in request.form.items():
@@ -80,10 +88,21 @@ def manage_settings():
                     continue
                 s = Setting.query.filter_by(key=key).first()
                 if s:
-                    json.loads(value.replace("'", '"'))
+                    if key in json_keys:
+                        try:
+                            json.loads(value.replace("'", '"'))
+                        except Exception:
+                            raise ValueError(f"Invalid JSON value for setting: {key}")
                     s.value = value
 
+            # ✅ الوضع الليلي (اختياري قديم)
+            dark_value = request.form.get("dark_mode_enabled", "false")
+            dark_setting = Setting.query.filter_by(key="dark_mode_enabled").first()
+            if dark_setting:
+                dark_setting.value = dark_value
+
             db.session.commit()
+
             action = request.form.get("action")
             if action == "save_and_preview":
                 return redirect(url_for("public.resume"))
@@ -92,6 +111,7 @@ def manage_settings():
         except Exception as e:
             error = f"Error in JSON format: {str(e)}"
 
+    # ✅ إعدادات العرض
     section_title_css_data = {
         "font-size": "20px",
         "color": "#000000",
@@ -120,14 +140,17 @@ def manage_settings():
             body_font_value = s.value
 
     with force_locale(get_locale()):
+        settings_dict = {s.key: s.value for s in settings}
         return render_template(
             "admin/settings.html.j2",
             settings=settings,
+            settings_dict=settings_dict,
             error=error,
             section_title_css_data=section_title_css_data,
             paragraph_css_data=paragraph_css_data,
             body_font_value=body_font_value
         )
+
 
 # @admin_bp.route("/builder")
 # def resume_builder():

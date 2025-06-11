@@ -38,4 +38,4 @@ def init_i18n(app):
 
     @app.context_processor
     def inject_translation():
-        return dict(gettext=gettext)
+        return dict(_=gettext)

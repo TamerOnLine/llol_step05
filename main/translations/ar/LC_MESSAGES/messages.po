@@ -13,7 +13,7 @@ msgstr ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-06-11 14:15+0200\n"
+"POT-Creation-Date: 2025-06-11 20:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.17.0\n"
 
-#: M:/llol_step05/main/routes/main_routes.py:18
+#: M:/llol_step05/main/routes/main_routes.py:25
 msgid "Select language:"
 msgstr "حدد اللغة:"
 
@@ -137,6 +137,26 @@ msgstr "استئناف مشروع الجستارت erfolgreich!"
 #: M:/llol_step05/main/templates/home.html.j2:5
 msgid "Welcome to your multilingual resume application."
 msgstr "مرحبًا بك في تطبيق السيرة الذاتية متعددة اللغات."
+
+#: M:/llol_step05/main/templates/index.html.j2:3
+msgid "Welcome to Resume Project"
+msgstr "مرحبا بكم في استئناف المشروع"
+
+#: M:/llol_step05/main/templates/index.html.j2:6
+msgid "Welcome to Resume Builder"
+msgstr "مرحبا بكم في استئناف البناء"
+
+#: M:/llol_step05/main/templates/index.html.j2:7
+msgid "This platform allows you to build multilingual resumes dynamically."
+msgstr "يتيح لك هذا النظام الأساسي بناء السير الذاتية متعددة اللغات ديناميكيا."
+
+#: M:/llol_step05/main/templates/index.html.j2:11
+msgid "Go to Resume Builder"
+msgstr "اذهب لاستئناف البناء"
+
+#: M:/llol_step05/main/templates/index.html.j2:14
+msgid "Customize Style"
+msgstr "تخصيص النمط"
 
 #: M:/llol_step05/main/templates/admin/paragraph_fields.html.j2:3
 #: M:/llol_step05/main/templates/admin/paragraph_fields.html.j2:6
@@ -293,7 +313,7 @@ msgid "Edit Resume Sections"
 msgstr "تحرير الأقسام السيرة الذاتية"
 
 #: M:/llol_step05/main/templates/admin/sections.html.j2:13
-#: M:/llol_step05/main/templates/admin/settings.html.j2:74
+#: M:/llol_step05/main/templates/admin/settings.html.j2:89
 msgid "Save Changes"
 msgstr "حفظ التغييرات"
 
@@ -339,7 +359,15 @@ msgstr "وزن الخط"
 msgid "paragraph_css"
 msgstr "الفقرة"
 
-#: M:/llol_step05/main/templates/admin/settings.html.j2:75
+#: M:/llol_step05/main/templates/admin/settings.html.j2:69
+msgid "Choose Theme Mode"
+msgstr "اختر وضع السمة"
+
+#: M:/llol_step05/main/templates/admin/settings.html.j2:70
+msgid "Theme"
+msgstr "سمة"
+
+#: M:/llol_step05/main/templates/admin/settings.html.j2:90
 msgid "Save & Show Preview"
 msgstr "معاينة حفظ وإظهار"
 
@@ -375,11 +403,3 @@ msgstr "العودة إلى الأقسام"
 #: M:/llol_step05/main/templates/partials/footer.html.j2:2
 msgid "All rights reserved."
 msgstr "جميع الحقوق محفوظة."
-
-#: M:/llol_step05/main/templates/public/resume.html.j2:3
-msgid "Resume"
-msgstr "سيرة ذاتية"
-
-#: M:/llol_step05/main/templates/public/resume.html.j2:6
-msgid "My Resume"
-msgstr "سيرتي الذاتية"
